@@ -1,3 +1,17 @@
+/*
+   picocolor.hpp - 1.0
+
+   Author:
+        Paul Meffle
+
+   Summary:
+        picocolor is a single-file header that implements stream manipulators
+        for ansi color sequences.
+
+   Revision history:
+        1.0   (14.08.2017) initial release
+*/
+
 #ifndef _PICOCOLOR_HPP
 #define _PICOCOLOR_HPP
 

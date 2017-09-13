@@ -17,7 +17,10 @@
 
 #include <iostream>
 
-// Used for array indices, don't change the numbers!
+/**
+ * Holds all possible colors for both foreground and background.
+ * Used for array indices, don't change the numbers!
+ */
 enum Color {
         Reset = 0,
         Black,
@@ -32,6 +35,9 @@ enum Color {
         COLOR_COUNT
 };
 
+/**
+ * Holds all the ansi escape sequences for the foreground colors.
+ */
 const char* fgColors[] = {
         "\033[39m",
         "\033[30m",
@@ -44,6 +50,9 @@ const char* fgColors[] = {
         "\033[37m"
 };
 
+/**
+ * Holds all the ansi escape sequences for the background colors.
+ */
 const char* bgColors[] = {
         "\033[49m",
         "\033[40m",
@@ -56,20 +65,48 @@ const char* bgColors[] = {
         "\033[47m",
 };
 
+/**
+ * An ostream manipulator that changes the foreground color.
+ */
 class fg {
 public:
+        /**
+         * @param color The color to change to
+         */
         fg(const Color& color);
 
+        /**
+         * Looks up the ansi escape sequence for 'color' and ouputs it to
+         * the ostream 'os'.
+         *
+         * @param os The ostream to manipulate
+         *
+         * @return A reference to 'os'
+         */
         std::ostream& operator()(std::ostream& os) const;
 
 private:
         Color color;
 };
 
+/**
+ * An ostream manipulator that changes the background color.
+ */
 class bg {
 public:
+        /**
+         * @param color The color to change to
+         */
         bg(const Color& color);
 
+        /**
+         * Looks up the ansi escape sequence for 'color' and ouputs it to
+         * the ostream 'os'.
+         *
+         * @param os The ostream to manipulate
+         *
+         * @return A reference to 'os'
+         */
         std::ostream& operator()(std::ostream& os) const;
 
 private:

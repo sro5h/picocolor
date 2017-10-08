@@ -16,7 +16,22 @@
 #ifndef _PICOCOLOR_HPP
 #define _PICOCOLOR_HPP
 
+// Determine the platform
+#if defined(WIN32) || defined(_WIN32) || defined(_WIN64)
+#define PICOCOLOR_WINDOWS
+#elif defined(__unix__) || defined(__unix) || defined(__linux__) ||\
+        defined(__APPLE__) || defined(__MACH)
+#define PICOCOLOR_UNIX
+#endif
+
+
 #include <iostream>
+
+#if defined(PICOCOLOR_UNIX)
+#include <unistd.h>
+#elif defined(PICOCOLOR_WINDOWS)
+#include <io.h>
+#endif
 
 /**
  * Holds all possible colors for both foreground and background.
@@ -118,6 +133,27 @@ private:
 
 #ifdef PICOCOLOR_IMPL
 
+bool isTty(std::ostream& os)
+{
+        if (os.rdbuf() == std::cout.rdbuf()) {
+#if defined(PICOCOLOR_UNIX)
+                return isatty(fileno(stdout));
+#elif defined(PICOCOLOR_WINDOWS)
+                return _isatty(_fileno(stdout));
+#endif
+        }
+
+        if (os.rdbuf() == std::cerr.rdbuf() || os.rdbuf() == std::clog.rdbuf()) {
+#if defined(PICOCOLOR_UNIX)
+                return isatty(fileno(stderr));
+#elif defined(PICOCOLOR_WINDOWS)
+                return _isatty(_fileno(stderr));
+#endif
+        }
+
+        return false;
+}
+
 fg::fg(const Color& color)
         : color(color)
 {
@@ -125,7 +161,7 @@ fg::fg(const Color& color)
 
 std::ostream& fg::operator()(std::ostream& os) const
 {
-        if (color >= 0 && color < COLOR_COUNT) {
+        if (isTty(os) && color >= 0 && color < COLOR_COUNT) {
                 os << fgColors[color];
         }
 
@@ -144,7 +180,7 @@ bg::bg(const Color& color)
 
 std::ostream& bg::operator()(std::ostream& os) const
 {
-        if (color >= 0 && color < COLOR_COUNT) {
+        if (isTty(os) && color >= 0 && color < COLOR_COUNT) {
                 os << bgColors[color];
         }
 
@@ -157,6 +193,9 @@ std::ostream& operator<<(std::ostream& os, const bg& background)
 }
 
 #endif // PICOCOLOR_IMPL
+
+#undef PICOCOLOR_WINDOWS
+#undef PICOCOLOR_UNIX
 
 /*
    zlib license:

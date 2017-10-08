@@ -39,47 +39,15 @@
  * Used for array indices, don't change the numbers!
  */
 enum Color {
-        Reset = 0,
-        Black,
-        Red,
-        Green,
-        Yellow,
-        Blue,
-        Magenta,
-        Cyan,
-        White,
-
-        COLOR_COUNT
-};
-
-/**
- * Holds all the ansi escape sequences for the foreground colors.
- */
-const char* fgColors[] = {
-        "\033[39m",
-        "\033[30m",
-        "\033[31m",
-        "\033[32m",
-        "\033[33m",
-        "\033[34m",
-        "\033[35m",
-        "\033[36m",
-        "\033[37m"
-};
-
-/**
- * Holds all the ansi escape sequences for the background colors.
- */
-const char* bgColors[] = {
-        "\033[49m",
-        "\033[40m",
-        "\033[41m",
-        "\033[42m",
-        "\033[43m",
-        "\033[44m",
-        "\033[45m",
-        "\033[46m",
-        "\033[47m",
+        Black = 0,
+        Red = 1,
+        Green = 2,
+        Yellow = 3,
+        Blue = 4,
+        Magenta = 5,
+        Cyan = 6,
+        White = 7,
+        Reset = 9,
 };
 
 /**
@@ -162,8 +130,8 @@ fg::fg(const Color& color)
 
 std::ostream& fg::operator()(std::ostream& os) const
 {
-        if (isTty(os) && color >= 0 && color < COLOR_COUNT) {
-                os << fgColors[color];
+        if (isTty(os)) {
+                os << "\033[3" << static_cast<int>(color) << "m";
         }
 
         return os;
@@ -181,8 +149,8 @@ bg::bg(const Color& color)
 
 std::ostream& bg::operator()(std::ostream& os) const
 {
-        if (isTty(os) && color >= 0 && color < COLOR_COUNT) {
-                os << bgColors[color];
+        if (isTty(os)) {
+                os << "\033[4" << static_cast<int>(color) << "m";
         }
 
         return os;

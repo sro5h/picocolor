@@ -1,5 +1,5 @@
 /*
-   picocolor.hpp - 1.1.1
+   picocolor.hpp - 1.1.2
 
    Author:
         Paul Meffle
@@ -13,6 +13,7 @@
         1.0.1 (13.09.2017) add documentation
         1.1.0 (08.10.2017) only output color sequence if std::ostream is a tty
         1.1.1 (08.10.2017) remove color sequence arrays
+        1.1.2 (12.10.2017) fix non-void function not returning warning
 */
 
 #ifndef _PICOCOLOR_HPP

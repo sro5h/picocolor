@@ -5,7 +5,7 @@
 
 std::ostream& ShowVersion(std::ostream& os)
 {
-        os << "picocolor 0.0.1";
+        return os << "picocolor 0.0.1";
 }
 
 int main(int argc, char* argv[])
